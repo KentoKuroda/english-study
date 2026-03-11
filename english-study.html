@@ -432,20 +432,20 @@
 
       <div class="info-box">
         📡 <strong>JSONBin.io</strong> を使って Mac と iPhone でデータを共有します。<br>
-        無料アカウントを <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> で作成し、
-        APIキーを取得してください。<br>
-        手順：ログイン → 右上メニュー → <strong>API Keys</strong> → <strong>Secret Key</strong> をコピー
+        手順：<a href="https://jsonbin.io" target="_blank">jsonbin.io</a> でログイン →
+        「<strong>+ New Bin</strong>」でビンを作成 → API Keys →
+        <strong>Access Keys</strong> でそのビンを選択してキーを作成
       </div>
 
       <div class="field-group">
-        <label>Secret Key（APIキー）</label>
-        <input id="cfg-key" type="password" placeholder="$2b$10$..." autocomplete="off">
+        <label>Access Key</label>
+        <input id="cfg-key" type="password" placeholder="$2a$10$..." autocomplete="off">
       </div>
 
       <div class="field-group" id="bin-id-group">
-        <label>Bin ID <span style="font-weight:400;color:var(--text-sub)">（2台目以降：1台目のIDを入力）</span></label>
+        <label>Bin ID <span style="font-weight:400;color:var(--text-sub)">（2台目以降：1台目と同じIDを入力）</span></label>
         <div class="field-row">
-          <input id="cfg-bin" type="text" placeholder="新規作成する場合は空欄のまま" oninput="document.getElementById('warn-box').style.display = getBinId() && this.value !== getBinId() ? '' : 'none'">
+          <input id="cfg-bin" type="text" placeholder="68xxxxxxxxxxxxxx" oninput="document.getElementById('warn-box').style.display = getBinId() && this.value !== getBinId() ? '' : 'none'">
           <button class="copy-btn" onclick="copyBinId()" id="copy-bin-btn" style="display:none">コピー</button>
         </div>
       </div>
@@ -657,7 +657,7 @@ async function loadFromCloud() {
   setSyncStatus('syncing', '同期中…');
   try {
     const res = await fetch(`${JSONBIN_BASE}/b/${bin}/latest`, {
-      headers: { 'X-Master-Key': key }
+      headers: { 'X-Access-Key': key }
     });
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
@@ -679,7 +679,7 @@ async function saveToCloud(wordsData) {
   try {
     const res = await fetch(`${JSONBIN_BASE}/b/${bin}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Master-Key': key },
+      headers: { 'Content-Type': 'application/json', 'X-Access-Key': key },
       body: JSON.stringify({ words: wordsData })
     });
     if (!res.ok) throw new Error(res.status);
@@ -687,22 +687,6 @@ async function saveToCloud(wordsData) {
   } catch(e) {
     setSyncStatus('error', '✗ 保存失敗');
   }
-}
-
-async function createBin(key) {
-  const res = await fetch(`${JSONBIN_BASE}/b`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Master-Key': key,
-      'X-Bin-Name': 'english-study',
-      'X-Bin-Private': 'true'
-    },
-    body: JSON.stringify({ words: [] })
-  });
-  if (!res.ok) throw new Error(res.status);
-  const data = await res.json();
-  return data.metadata.id;
 }
 
 // ─── Settings Modal ───────────────────────────
@@ -743,21 +727,18 @@ async function saveSettings() {
   const key = document.getElementById('cfg-key').value.trim();
   const binInput = document.getElementById('cfg-bin').value.trim();
 
-  if (!key) { showModalError('APIキーを入力してください。'); return; }
+  if (!key) { showModalError('Access Keyを入力してください。'); return; }
+  if (!binInput) { showModalError('Bin IDを入力してください。jsonbin.io でビンを作成してIDをコピーしてください。'); return; }
 
   const btn = document.getElementById('btn-connect');
   btn.textContent = '接続中…'; btn.disabled = true;
 
   try {
-    let binId = binInput;
-    if (!binId) {
-      binId = await createBin(key);
-    } else {
-      const res = await fetch(`${JSONBIN_BASE}/b/${binId}/latest`, {
-        headers: { 'X-Master-Key': key }
-      });
-      if (!res.ok) throw new Error('Bin IDまたはAPIキーが正しくありません。');
-    }
+    const binId = binInput;
+    const res = await fetch(`${JSONBIN_BASE}/b/${binId}/latest`, {
+      headers: { 'X-Access-Key': key }
+    });
+    if (!res.ok) throw new Error('Bin IDまたはAccess Keyが正しくありません。');
 
     localStorage.setItem(LS_APIKEY, key);
     localStorage.setItem(LS_BINID, binId);
