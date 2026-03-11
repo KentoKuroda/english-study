@@ -277,10 +277,24 @@
     }
 
     .word-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-    .word-table th:nth-child(1), .word-table td:nth-child(1) { width: 25%; }
-    .word-table th:nth-child(2), .word-table td:nth-child(2) { width: 25%; }
-    .word-table th:nth-child(3), .word-table td:nth-child(3) { width: 45%; }
-    .word-table th:nth-child(4), .word-table td:nth-child(4) { width: 5%; }
+    .word-table th:nth-child(1), .word-table td:nth-child(1) { width: 10%; }
+    .word-table th:nth-child(2), .word-table td:nth-child(2) { width: 22%; }
+    .word-table th:nth-child(3), .word-table td:nth-child(3) { width: 22%; }
+    .word-table th:nth-child(4), .word-table td:nth-child(4) { width: 40%; }
+    .word-table th:nth-child(5), .word-table td:nth-child(5) { width: 6%; }
+
+    .status-select {
+      padding: 4px 4px;
+      border-radius: var(--radius-sm);
+      font-size: 11px; font-weight: 700;
+      cursor: pointer; width: 100%;
+      border: 1px solid var(--border);
+      appearance: none; -webkit-appearance: none;
+      text-align: center;
+    }
+    .status-new    { color: var(--accent);   background: var(--accent-light);  border-color: #bfdbfe; }
+    .status-got    { color: var(--warning);  background: var(--warning-light); border-color: #fde68a; }
+    .status-master { color: var(--success);  background: var(--success-light); border-color: #bbf7d0; }
     .word-table th {
       text-align: left;
       padding: 10px 16px;
@@ -397,8 +411,8 @@
       .form-grid { grid-template-columns: 1fr; }
       .mode-select { grid-template-columns: 1fr; }
       .card-word { font-size: 24px; }
-      .word-table th:nth-child(3),
-      .word-table td:nth-child(3) { display: none; }
+      .word-table th:nth-child(4),
+      .word-table td:nth-child(4) { display: none; }
       .tab-btn { padding: 0 12px; font-size: 13px; }
     }
   </style>
@@ -505,6 +519,7 @@
       <table class="word-table">
         <thead>
           <tr>
+            <th>Status</th>
             <th>英語</th>
             <th>日本語</th>
             <th>例文</th>
@@ -788,6 +803,17 @@ function persistWords(w) {
   syncTimer = setTimeout(() => saveToCloud(w), 600);
 }
 
+// ─── Status sort order ────────────────────────
+const STATUS_ORDER = { 'New': 0, 'Got': 1, 'Master': 2 };
+
+function sortedWords(list) {
+  return [...list].sort((a, b) => {
+    const sa = STATUS_ORDER[a.status ?? 'New'] ?? 0;
+    const sb = STATUS_ORDER[b.status ?? 'New'] ?? 0;
+    return sa - sb;
+  });
+}
+
 // ─── Word List Rendering ──────────────────────
 function renderList(filter = '') {
   const tbody = document.getElementById('word-tbody');
@@ -802,7 +828,7 @@ function renderList(filter = '') {
   document.getElementById('count-badge').textContent = words.length + ' 件';
 
   if (words.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4">
+    tbody.innerHTML = `<tr><td colspan="5">
       <div class="empty-state">
         <div class="empty-icon">📖</div>
         <p>まだ単語が登録されていません。<br>上のフォームから追加してみましょう！</p>
@@ -812,7 +838,7 @@ function renderList(filter = '') {
   }
 
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4">
+    tbody.innerHTML = `<tr><td colspan="5">
       <div class="empty-state">
         <div class="empty-icon">🔍</div>
         <p>「${escHtml(q)}」に一致する単語が見つかりません。</p>
@@ -821,8 +847,17 @@ function renderList(filter = '') {
     return;
   }
 
-  tbody.innerHTML = filtered.map(w => `
+  tbody.innerHTML = sortedWords(filtered).map(w => {
+    const status = w.status || 'New';
+    return `
     <tr>
+      <td>
+        <select class="status-select status-${status.toLowerCase()}" onchange="updateStatus('${w.id}', this.value)">
+          <option value="New"    ${status === 'New'    ? 'selected' : ''}>New</option>
+          <option value="Got"    ${status === 'Got'    ? 'selected' : ''}>Got</option>
+          <option value="Master" ${status === 'Master' ? 'selected' : ''}>Master</option>
+        </select>
+      </td>
       <td><div class="word-en">${escHtml(w.en)}</div></td>
       <td><div class="word-ja">${escHtml(w.ja)}</div></td>
       <td><div class="word-ex">${escHtml(w.ex || '—')}</div></td>
@@ -833,7 +868,17 @@ function renderList(filter = '') {
         </div>
       </td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
+}
+
+function updateStatus(id, status) {
+  const idx = words.findIndex(w => w.id === id);
+  if (idx !== -1) {
+    words[idx].status = status;
+    persistWords(words);
+    renderList(document.getElementById('search-input').value);
+  }
 }
 
 // ─── Add / Edit ───────────────────────────────
@@ -845,10 +890,10 @@ document.getElementById('btn-save').addEventListener('click', () => {
 
   if (editingId) {
     const idx = words.findIndex(w => w.id === editingId);
-    if (idx !== -1) words[idx] = { id: editingId, en, ja, ex };
+    if (idx !== -1) words[idx] = { ...words[idx], en, ja, ex };
     cancelEdit();
   } else {
-    words.push({ id: genId(), en, ja, ex });
+    words.push({ id: genId(), en, ja, ex, status: 'New' });
   }
 
   persistWords(words);
