@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英語単語帳</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* iOS tap fixes */
+    button, [role="button"] {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    :root {
+      --bg: #f5f5f0;
+      --surface: #ffffff;
+      --surface2: #f0efe9;
+      --border: #e0ddd5;
+      --text: #1a1a1a;
+      --text-sub: #6b6b6b;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-light: #eff6ff;
+      --danger: #dc2626;
+      --danger-light: #fef2f2;
+      --success: #16a34a;
+      --success-light: #f0fdf4;
+      --warning: #d97706;
+      --warning-light: #fffbeb;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 56px;
+    }
+    .logo { font-weight: 700; font-size: 17px; margin-right: auto; }
+    .logo span { color: var(--accent); }
+
+    .tab-btn {
+      height: 56px;
+      padding: 0 18px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-sub);
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* Sync status */
+    .sync-status {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-weight: 500;
+      margin-left: 8px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .sync-status.idle { display: none; }
+    .sync-status.syncing { background: var(--warning-light); color: var(--warning); }
+    .sync-status.ok    { background: var(--success-light); color: var(--success); }
+    .sync-status.error { background: var(--danger-light);  color: var(--danger); }
+
+    .btn-gear {
+      height: 36px; width: 36px;
+      border: none; background: none; cursor: pointer;
+      font-size: 18px; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; margin-left: 8px;
+    }
+    .btn-gear:hover { background: var(--surface2); }
+
+    /* ── Layout ── */
+    main { max-width: 860px; margin: 0 auto; padding: 28px 20px; }
+
+    /* ── Page sections ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      border: none; cursor: pointer;
+      font-size: 14px; font-weight: 500;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--border); }
+    .btn-danger { background: var(--danger-light); color: var(--danger); }
+    .btn-danger:hover { background: #fecaca; }
+    .btn-icon {
+      padding: 6px 8px;
+      background: none; border: none; cursor: pointer;
+      color: var(--text-sub); border-radius: var(--radius-sm);
+      transition: all 0.15s; font-size: 16px;
+    }
+    .btn-icon:hover { background: var(--surface2); color: var(--text); }
+    .btn-lg {
+      padding: 12px 28px;
+      font-size: 15px;
+      border-radius: var(--radius);
+    }
+
+    /* ── Settings modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      width: 100%; max-width: 480px;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      max-height: 90vh;
+    }
+    .modal-header {
+      padding: 18px 20px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+      flex-shrink: 0;
+    }
+    .modal-header h3 { font-size: 16px; font-weight: 700; flex: 1; }
+    .modal-body { padding: 20px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 8px; justify-content: flex-end;
+      flex-shrink: 0;
+    }
+
+    .info-box {
+      background: var(--accent-light);
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      color: #1e40af;
+    }
+    .info-box a { color: var(--accent); }
+    .warning-box {
+      background: var(--warning-light);
+      border: 1px solid #fde68a;
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.6;
+      margin-top: 12px;
+      color: #92400e;
+    }
+    .field-group { margin-bottom: 14px; }
+    .field-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+    .field-row { display: flex; gap: 8px; }
+    .field-row input { flex: 1; }
+    .copy-btn {
+      padding: 8px 10px; font-size: 13px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); cursor: pointer;
+      white-space: nowrap;
+    }
+    .copy-btn:hover { background: var(--border); }
+    .connected-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--success-light); color: var(--success);
+      border-radius: 99px; padding: 3px 10px; font-size: 13px; font-weight: 600;
+      margin-bottom: 14px;
+    }
+    .disconnected-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--surface2); color: var(--text-sub);
+      border-radius: 99px; padding: 3px 10px; font-size: 13px; font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    /* ────────────────────────────────
+       WORD LIST PAGE
+    ──────────────────────────────── */
+    .list-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .list-header h2 { font-size: 20px; font-weight: 700; margin-right: auto; }
+    .count-badge {
+      background: var(--accent-light); color: var(--accent);
+      padding: 2px 10px; border-radius: 99px;
+      font-size: 13px; font-weight: 600;
+    }
+
+    .form-card { margin-bottom: 20px; }
+    .form-card .form-inner { padding: 20px; }
+    .form-title { font-weight: 600; font-size: 15px; margin-bottom: 16px; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .form-row { display: flex; flex-direction: column; gap: 4px; }
+    .form-row.full { grid-column: 1 / -1; }
+    label { font-size: 13px; font-weight: 500; color: var(--text-sub); }
+    input, textarea {
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--text);
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+    }
+    textarea { resize: vertical; min-height: 60px; }
+    .form-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+    .search-bar { margin-bottom: 16px; position: relative; }
+    .search-bar input { padding-left: 36px; }
+    .search-icon {
+      position: absolute; left: 11px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-sub); font-size: 15px;
+      pointer-events: none;
+    }
+
+    .word-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .word-table th:nth-child(1), .word-table td:nth-child(1) { width: 25%; }
+    .word-table th:nth-child(2), .word-table td:nth-child(2) { width: 25%; }
+    .word-table th:nth-child(3), .word-table td:nth-child(3) { width: 45%; }
+    .word-table th:nth-child(4), .word-table td:nth-child(4) { width: 5%; }
+    .word-table th {
+      text-align: left;
+      padding: 10px 16px;
+      font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--text-sub);
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+    .word-table th:first-child { border-radius: var(--radius) 0 0 0; }
+    .word-table th:last-child  { border-radius: 0 var(--radius) 0 0; }
+    .word-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .word-table tr:last-child td { border-bottom: none; }
+    .word-table tr:hover td { background: var(--accent-light); }
+    .word-en { font-weight: 600; font-size: 15px; }
+    .word-ja { color: var(--text-sub); font-size: 14px; }
+    .word-ex { color: var(--text-sub); font-size: 13px; font-style: italic; margin-top: 2px; }
+    .td-actions { display: flex; flex-direction: column; gap: 2px; align-items: center; padding: 0; }
+    .td-actions .btn-icon { padding: 4px; font-size: 13px; }
+    .empty-state {
+      text-align: center; padding: 60px 20px; color: var(--text-sub);
+    }
+    .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
+
+    /* ────────────────────────────────
+       STUDY PAGE
+    ──────────────────────────────── */
+    .study-setup { padding: 32px; text-align: center; }
+    .study-setup h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .study-setup p { color: var(--text-sub); margin-bottom: 28px; }
+
+    .mode-select {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; margin-bottom: 28px; text-align: left;
+    }
+    .mode-option {
+      padding: 16px; border: 2px solid var(--border);
+      border-radius: var(--radius); cursor: pointer; transition: all 0.15s;
+    }
+    .mode-option:hover { border-color: var(--accent); background: var(--accent-light); }
+    .mode-option.selected { border-color: var(--accent); background: var(--accent-light); }
+    .mode-option input { display: none; }
+    .mode-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+    .mode-desc { font-size: 13px; color: var(--text-sub); }
+
+    .flashcard-wrap { padding: 32px; }
+    .progress-bar-outer {
+      height: 4px; background: var(--surface2);
+      border-radius: 99px; margin-bottom: 24px; overflow: hidden;
+    }
+    .progress-bar-inner {
+      height: 100%; background: var(--accent);
+      border-radius: 99px; transition: width 0.3s;
+    }
+    .progress-text {
+      font-size: 13px; color: var(--text-sub);
+      text-align: center; margin-bottom: 20px; margin-top: -18px;
+    }
+
+    .flashcard {
+      perspective: 1000px; height: 240px;
+      margin-bottom: 24px; cursor: pointer; user-select: none;
+    }
+    .flashcard-inner {
+      position: relative; width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+    .card-face {
+      position: absolute; inset: 0;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 28px;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    }
+    .card-front { background: var(--surface); }
+    .card-back  { background: var(--accent-light); transform: rotateY(180deg); }
+    .card-label {
+      font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text-sub); margin-bottom: 12px;
+    }
+    .card-word { font-size: 32px; font-weight: 700; text-align: center; line-height: 1.3; }
+    .card-example {
+      font-size: 13px; color: var(--text-sub); font-style: italic;
+      margin-top: 10px; text-align: center; line-height: 1.5;
+    }
+    .card-hint { font-size: 13px; color: var(--text-sub); margin-top: 8px; }
+
+    .fc-controls {
+      display: flex; gap: 10px; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .btn-correct { background: var(--success-light); color: var(--success); }
+    .btn-correct:hover { background: #bbf7d0; }
+    .btn-wrong   { background: var(--danger-light);  color: var(--danger); }
+    .btn-wrong:hover { background: #fecaca; }
+
+    .result-wrap { padding: 40px 32px; text-align: center; }
+    .result-score { font-size: 64px; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+    .result-label { font-size: 15px; color: var(--text-sub); margin-bottom: 28px; }
+    .result-breakdown { display: flex; justify-content: center; gap: 24px; margin-bottom: 32px; }
+    .result-item { text-align: center; }
+    .result-item .ri-num { font-size: 24px; font-weight: 700; }
+    .result-item .ri-label { font-size: 13px; color: var(--text-sub); }
+    .result-actions { display: flex; gap: 10px; justify-content: center; }
+
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .mode-select { grid-template-columns: 1fr; }
+      .card-word { font-size: 24px; }
+      .word-table th:nth-child(3),
+      .word-table td:nth-child(3) { display: none; }
+      .tab-btn { padding: 0 12px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ Settings Modal ══ -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span style="font-size:20px">⚙️</span>
+      <h3>クラウド同期設定</h3>
+      <button class="btn-icon" onclick="closeSettings()" style="font-size:18px">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="connection-badge"></div>
+
+      <div class="info-box">
+        📡 <strong>JSONBin.io</strong> を使って Mac と iPhone でデータを共有します。<br>
+        無料アカウントを <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> で作成し、
+        APIキーを取得してください。<br>
+        手順：ログイン → 右上メニュー → <strong>API Keys</strong> → <strong>Secret Key</strong> をコピー
+      </div>
+
+      <div class="field-group">
+        <label>Secret Key（APIキー）</label>
+        <input id="cfg-key" type="password" placeholder="$2b$10$..." autocomplete="off">
+      </div>
+
+      <div class="field-group" id="bin-id-group">
+        <label>Bin ID <span style="font-weight:400;color:var(--text-sub)">（2台目以降：1台目のIDを入力）</span></label>
+        <div class="field-row">
+          <input id="cfg-bin" type="text" placeholder="新規作成する場合は空欄のまま" oninput="document.getElementById('warn-box').style.display = getBinId() && this.value !== getBinId() ? '' : 'none'">
+          <button class="copy-btn" onclick="copyBinId()" id="copy-bin-btn" style="display:none">コピー</button>
+        </div>
+      </div>
+
+      <div class="warning-box" id="warn-box" style="display:none">
+        ⚠️ Bin IDを変更すると既存のデータが切り離されます。
+      </div>
+      <div class="warning-box" id="error-box" style="display:none; margin-top:12px"></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" id="btn-disconnect" onclick="disconnectCloud()" style="display:none">同期を解除</button>
+      <button type="button" class="btn btn-secondary" onclick="closeSettings()">キャンセル</button>
+      <button type="button" class="btn btn-primary" onclick="saveSettings()" id="btn-connect">接続する</button>
+    </div>
+  </div>
+</div>
+
+<!-- iOS Files app warning banner -->
+<div id="ios-banner" style="display:none; background:#1d4ed8; color:#fff; text-align:center; padding:10px 16px; font-size:13px; line-height:1.5;">
+  ⚠️ Filesアプリでは一部機能が動作しません。<br>
+  画面下の <strong>共有ボタン（□↑）→「Safariで開く」</strong> を選択してください。
+</div>
+
+<header>
+  <div class="logo">英語<span>単語帳</span></div>
+  <button class="tab-btn active" data-tab="list">単語一覧</button>
+  <button class="tab-btn" data-tab="study">学習モード</button>
+  <span class="sync-status idle" id="sync-status"></span>
+  <button class="btn-gear" onclick="openSettings()" title="クラウド同期設定">⚙️</button>
+</header>
+
+<main>
+
+  <!-- ══ WORD LIST PAGE ══ -->
+  <div class="page active" id="page-list">
+
+    <div class="card form-card">
+      <div class="form-inner">
+        <div class="form-title" id="form-title">＋ 単語を追加</div>
+        <div class="form-grid">
+          <div class="form-row">
+            <label for="inp-en">英語（単語・熟語）</label>
+            <input id="inp-en" type="text" placeholder="例: come up with">
+          </div>
+          <div class="form-row">
+            <label for="inp-ja">日本語</label>
+            <input id="inp-ja" type="text" placeholder="例: 思いつく">
+          </div>
+          <div class="form-row full">
+            <label for="inp-ex">例文</label>
+            <textarea id="inp-ex" placeholder="例: She came up with a great idea."></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-secondary" id="btn-cancel" style="display:none">キャンセル</button>
+          <button class="btn btn-primary" id="btn-save">保存する</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-header">
+      <h2>単語リスト</h2>
+      <span class="count-badge" id="count-badge">0 件</span>
+    </div>
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input id="search-input" type="text" placeholder="英語または日本語で検索…">
+    </div>
+
+    <div class="card">
+      <table class="word-table">
+        <thead>
+          <tr>
+            <th>英語</th>
+            <th>日本語</th>
+            <th>例文</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="word-tbody"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ══ STUDY PAGE ══ -->
+  <div class="page" id="page-study">
+
+    <div id="study-setup">
+      <div class="card study-setup">
+        <h2>学習モード</h2>
+        <p>出題方向を選んでスタート</p>
+        <div class="mode-select">
+          <label class="mode-option selected">
+            <input type="radio" name="mode" value="en-ja" checked>
+            <div class="mode-title">英語 → 日本語</div>
+            <div class="mode-desc">英語を見て日本語を答える</div>
+          </label>
+          <label class="mode-option">
+            <input type="radio" name="mode" value="ja-en">
+            <div class="mode-title">日本語 → 英語</div>
+            <div class="mode-desc">日本語を見て英語を答える</div>
+          </label>
+        </div>
+        <button class="btn btn-primary btn-lg" id="btn-start">スタート</button>
+      </div>
+    </div>
+
+    <div id="study-card" style="display:none">
+      <div class="card flashcard-wrap">
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="progress-bar"></div>
+        </div>
+        <div class="progress-text" id="progress-text"></div>
+
+        <div class="flashcard" id="flashcard" role="button" tabindex="0" onclick="flipCard()">
+          <div class="flashcard-inner">
+            <div class="card-face card-front">
+              <div class="card-label" id="front-label"></div>
+              <div class="card-word" id="front-word"></div>
+              <div class="card-hint">タップして答えを確認</div>
+            </div>
+            <div class="card-face card-back">
+              <div class="card-label" id="back-label"></div>
+              <div class="card-word" id="back-word"></div>
+              <div class="card-example" id="back-example"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fc-controls" id="fc-controls" style="display:none">
+          <button class="btn btn-wrong btn-lg" onclick="answer(false)">✗ 不正解</button>
+          <button class="btn btn-correct btn-lg" onclick="answer(true)">✓ 正解</button>
+        </div>
+        <div class="fc-controls" id="fc-flip-hint">
+          <button class="btn btn-secondary btn-lg" onclick="flipCard()">答えを見る</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="study-result" style="display:none">
+      <div class="card result-wrap">
+        <div class="result-score" id="result-score"></div>
+        <div class="result-label">正解率</div>
+        <div class="result-breakdown">
+          <div class="result-item">
+            <div class="ri-num" id="res-correct" style="color:var(--success)"></div>
+            <div class="ri-label">正解</div>
+          </div>
+          <div class="result-item">
+            <div class="ri-num" id="res-wrong" style="color:var(--danger)"></div>
+            <div class="ri-label">不正解</div>
+          </div>
+          <div class="result-item">
+            <div class="ri-num" id="res-total"></div>
+            <div class="ri-label">合計</div>
+          </div>
+        </div>
+        <div class="result-actions">
+          <button class="btn btn-secondary btn-lg" onclick="backToSetup()">設定に戻る</button>
+          <button class="btn btn-primary btn-lg" onclick="startStudy()">もう一度</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+// ─── Config keys ──────────────────────────────
+const LS_WORDS  = 'english_words_v1';
+const LS_APIKEY = 'jsonbin_api_key';
+const LS_BINID  = 'jsonbin_bin_id';
+const JSONBIN_BASE = 'https://api.jsonbin.io/v3';
+
+// ─── State ────────────────────────────────────
+let words = [];
+let editingId = null;
+let syncTimer = null;
+
+// ─── Utility ──────────────────────────────────
+function genId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function getApiKey() { return localStorage.getItem(LS_APIKEY) || ''; }
+function getBinId()  { return localStorage.getItem(LS_BINID)  || ''; }
+
+// ─── Sync status UI ───────────────────────────
+function setSyncStatus(state, text) {
+  const el = document.getElementById('sync-status');
+  el.className = 'sync-status ' + state;
+  el.textContent = text;
+  if (state === 'ok') {
+    setTimeout(() => { if (el.classList.contains('ok')) el.className = 'sync-status idle'; }, 3000);
+  }
+}
+
+// ─── Cloud (JSONBin) ──────────────────────────
+async function loadFromCloud() {
+  const key = getApiKey(), bin = getBinId();
+  if (!key || !bin) return false;
+  setSyncStatus('syncing', '同期中…');
+  try {
+    const res = await fetch(`${JSONBIN_BASE}/b/${bin}/latest`, {
+      headers: { 'X-Master-Key': key }
+    });
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    words = Array.isArray(data.record?.words) ? data.record.words : [];
+    localStorage.setItem(LS_WORDS, JSON.stringify(words));
+    setSyncStatus('ok', '✓ 同期済み');
+    renderList(document.getElementById('search-input').value);
+    return true;
+  } catch(e) {
+    setSyncStatus('error', '✗ 同期失敗');
+    return false;
+  }
+}
+
+async function saveToCloud(wordsData) {
+  const key = getApiKey(), bin = getBinId();
+  if (!key || !bin) return;
+  setSyncStatus('syncing', '保存中…');
+  try {
+    const res = await fetch(`${JSONBIN_BASE}/b/${bin}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': key },
+      body: JSON.stringify({ words: wordsData })
+    });
+    if (!res.ok) throw new Error(res.status);
+    setSyncStatus('ok', '✓ 保存済み');
+  } catch(e) {
+    setSyncStatus('error', '✗ 保存失敗');
+  }
+}
+
+async function createBin(key) {
+  const res = await fetch(`${JSONBIN_BASE}/b`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Master-Key': key,
+      'X-Bin-Name': 'english-study',
+      'X-Bin-Private': 'true'
+    },
+    body: JSON.stringify({ words: [] })
+  });
+  if (!res.ok) throw new Error(res.status);
+  const data = await res.json();
+  return data.metadata.id;
+}
+
+// ─── Settings Modal ───────────────────────────
+function openSettings() {
+  const key = getApiKey(), bin = getBinId();
+  const connected = key && bin;
+
+  document.getElementById('cfg-key').value = key;
+  document.getElementById('cfg-bin').value = bin;
+  document.getElementById('copy-bin-btn').style.display = bin ? '' : 'none';
+  document.getElementById('warn-box').style.display = 'none';
+  document.getElementById('btn-disconnect').style.display = connected ? '' : 'none';
+  document.getElementById('btn-connect').textContent = connected ? '再接続' : '接続する';
+
+  const badge = document.getElementById('connection-badge');
+  badge.innerHTML = connected
+    ? '<div class="connected-badge">🟢 接続中</div>'
+    : '<div class="disconnected-badge">⚫ 未接続</div>';
+
+  document.getElementById('settings-modal').classList.add('open');
+}
+
+function closeSettings() {
+  document.getElementById('settings-modal').classList.remove('open');
+}
+
+function showModalError(msg) {
+  const box = document.getElementById('error-box');
+  box.textContent = '❌ ' + msg;
+  box.style.display = '';
+}
+function hideModalError() {
+  document.getElementById('error-box').style.display = 'none';
+}
+
+async function saveSettings() {
+  hideModalError();
+  const key = document.getElementById('cfg-key').value.trim();
+  const binInput = document.getElementById('cfg-bin').value.trim();
+
+  if (!key) { showModalError('APIキーを入力してください。'); return; }
+
+  const btn = document.getElementById('btn-connect');
+  btn.textContent = '接続中…'; btn.disabled = true;
+
+  try {
+    let binId = binInput;
+    if (!binId) {
+      binId = await createBin(key);
+    } else {
+      const res = await fetch(`${JSONBIN_BASE}/b/${binId}/latest`, {
+        headers: { 'X-Master-Key': key }
+      });
+      if (!res.ok) throw new Error('Bin IDまたはAPIキーが正しくありません。');
+    }
+
+    localStorage.setItem(LS_APIKEY, key);
+    localStorage.setItem(LS_BINID, binId);
+    document.getElementById('cfg-bin').value = binId;
+    document.getElementById('copy-bin-btn').style.display = '';
+
+    closeSettings();
+    await loadFromCloud();
+  } catch(e) {
+    showModalError('接続失敗: ' + e.message);
+  } finally {
+    btn.textContent = '接続する'; btn.disabled = false;
+  }
+}
+
+function disconnectCloud() {
+  localStorage.removeItem(LS_APIKEY);
+  localStorage.removeItem(LS_BINID);
+  closeSettings();
+  setSyncStatus('idle', '');
+}
+
+function copyBinId() {
+  const bin = getBinId();
+  if (!bin) return;
+  navigator.clipboard.writeText(bin).then(() => {
+    const btn = document.getElementById('copy-bin-btn');
+    btn.textContent = 'コピー済み！';
+    setTimeout(() => { btn.textContent = 'コピー'; }, 2000);
+  });
+}
+
+// ─── Data Layer ───────────────────────────────
+function loadLocalWords() {
+  try { return JSON.parse(localStorage.getItem(LS_WORDS)) || []; }
+  catch { return []; }
+}
+
+function persistWords(w) {
+  localStorage.setItem(LS_WORDS, JSON.stringify(w));
+  // Debounce cloud save
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => saveToCloud(w), 600);
+}
+
+// ─── Word List Rendering ──────────────────────
+function renderList(filter = '') {
+  const tbody = document.getElementById('word-tbody');
+  const q = (filter || '').trim().toLowerCase();
+  const filtered = q
+    ? words.filter(w =>
+        w.en.toLowerCase().includes(q) ||
+        w.ja.toLowerCase().includes(q) ||
+        (w.ex || '').toLowerCase().includes(q))
+    : words;
+
+  document.getElementById('count-badge').textContent = words.length + ' 件';
+
+  if (words.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4">
+      <div class="empty-state">
+        <div class="empty-icon">📖</div>
+        <p>まだ単語が登録されていません。<br>上のフォームから追加してみましょう！</p>
+      </div>
+    </td></tr>`;
+    return;
+  }
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4">
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <p>「${escHtml(q)}」に一致する単語が見つかりません。</p>
+      </div>
+    </td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(w => `
+    <tr>
+      <td><div class="word-en">${escHtml(w.en)}</div></td>
+      <td><div class="word-ja">${escHtml(w.ja)}</div></td>
+      <td><div class="word-ex">${escHtml(w.ex || '—')}</div></td>
+      <td>
+        <div class="td-actions">
+          <button class="btn-icon" title="編集" onclick="startEdit('${w.id}')">✏️</button>
+          <button class="btn-icon" title="削除" onclick="deleteWord('${w.id}')">🗑️</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// ─── Add / Edit ───────────────────────────────
+document.getElementById('btn-save').addEventListener('click', () => {
+  const en = document.getElementById('inp-en').value.trim();
+  const ja = document.getElementById('inp-ja').value.trim();
+  const ex = document.getElementById('inp-ex').value.trim();
+  if (!en || !ja) { alert('英語と日本語は必須です。'); return; }
+
+  if (editingId) {
+    const idx = words.findIndex(w => w.id === editingId);
+    if (idx !== -1) words[idx] = { id: editingId, en, ja, ex };
+    cancelEdit();
+  } else {
+    words.push({ id: genId(), en, ja, ex });
+  }
+
+  persistWords(words);
+  renderList(document.getElementById('search-input').value);
+  clearForm();
+});
+
+document.getElementById('btn-cancel').addEventListener('click', cancelEdit);
+
+function clearForm() {
+  ['inp-en','inp-ja','inp-ex'].forEach(id => {
+    const el = document.getElementById(id);
+    el.tagName === 'TEXTAREA' ? el.value = '' : el.value = '';
+  });
+  document.getElementById('inp-en').value = '';
+  document.getElementById('inp-ja').value = '';
+  document.getElementById('inp-ex').value = '';
+}
+
+function startEdit(id) {
+  const w = words.find(w => w.id === id);
+  if (!w) return;
+  editingId = id;
+  document.getElementById('inp-en').value = w.en;
+  document.getElementById('inp-ja').value = w.ja;
+  document.getElementById('inp-ex').value = w.ex || '';
+  document.getElementById('form-title').textContent = '✏️ 単語を編集';
+  document.getElementById('btn-cancel').style.display = '';
+  document.getElementById('inp-en').focus();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelEdit() {
+  editingId = null;
+  clearForm();
+  document.getElementById('form-title').textContent = '＋ 単語を追加';
+  document.getElementById('btn-cancel').style.display = 'none';
+}
+
+function deleteWord(id) {
+  words = words.filter(w => w.id !== id);
+  persistWords(words);
+  renderList(document.getElementById('search-input').value);
+}
+
+document.getElementById('search-input').addEventListener('input', e => {
+  renderList(e.target.value);
+});
+
+// ─── Tab navigation ───────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('page-' + btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'study') resetStudy();
+  });
+});
+
+document.querySelectorAll('.mode-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    document.querySelectorAll('.mode-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+  });
+});
+
+// ─── Study Mode ───────────────────────────────
+let deck = [], deckIdx = 0, correctCount = 0, wrongCount = 0, studyMode = 'en-ja', flipped = false;
+
+function resetStudy() {
+  document.getElementById('study-setup').style.display = '';
+  document.getElementById('study-card').style.display = 'none';
+  document.getElementById('study-result').style.display = 'none';
+}
+function backToSetup() { resetStudy(); }
+
+document.getElementById('btn-start').addEventListener('click', startStudy);
+
+function startStudy() {
+  if (words.length === 0) { alert('単語が登録されていません。先に単語を追加してください。'); return; }
+  studyMode = document.querySelector('input[name="mode"]:checked').value;
+  deck = shuffle([...words]);
+  deckIdx = 0; correctCount = 0; wrongCount = 0;
+  document.getElementById('study-setup').style.display = 'none';
+  document.getElementById('study-result').style.display = 'none';
+  document.getElementById('study-card').style.display = '';
+  showCard();
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function showCard() {
+  flipped = false;
+  document.getElementById('flashcard').classList.remove('flipped');
+  document.getElementById('fc-controls').style.display = 'none';
+  document.getElementById('fc-flip-hint').style.display = '';
+
+  const w = deck[deckIdx];
+  const pct = ((deckIdx) / deck.length * 100).toFixed(0);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${deckIdx + 1} / ${deck.length}`;
+
+  if (studyMode === 'en-ja') {
+    document.getElementById('front-label').textContent = '英語';
+    document.getElementById('front-word').textContent = w.en;
+    document.getElementById('back-label').textContent = '日本語';
+    document.getElementById('back-word').textContent = w.ja;
+  } else {
+    document.getElementById('front-label').textContent = '日本語';
+    document.getElementById('front-word').textContent = w.ja;
+    document.getElementById('back-label').textContent = '英語';
+    document.getElementById('back-word').textContent = w.en;
+  }
+  document.getElementById('back-example').textContent = w.ex ? '例: ' + w.ex : '';
+}
+
+function flipCard() {
+  if (flipped) return;
+  flipped = true;
+  document.getElementById('flashcard').classList.add('flipped');
+  document.getElementById('fc-flip-hint').style.display = 'none';
+  document.getElementById('fc-controls').style.display = '';
+}
+
+function answer(correct) {
+  if (correct) correctCount++; else wrongCount++;
+  deckIdx++;
+  if (deckIdx >= deck.length) showResult(); else showCard();
+}
+
+function showResult() {
+  document.getElementById('study-card').style.display = 'none';
+  document.getElementById('study-result').style.display = '';
+  const total = deck.length;
+  const pct = total > 0 ? Math.round(correctCount / total * 100) : 0;
+  document.getElementById('result-score').textContent = pct + '%';
+  document.getElementById('res-correct').textContent = correctCount;
+  document.getElementById('res-wrong').textContent = wrongCount;
+  document.getElementById('res-total').textContent = total;
+}
+
+// ─── Modal close on outside click ─────────────
+document.getElementById('settings-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeSettings();
+});
+
+// ─── Init ─────────────────────────────────────
+// Detect if running inside iOS Files app (Quick Look) vs Safari
+(function() {
+  const ua = navigator.userAgent;
+  const isIOS = /iP(hone|ad|od)/.test(ua);
+  // In Files Quick Look, window.location.protocol is "file:" and there's no history API
+  if (isIOS && window.location.protocol === 'file:') {
+    document.getElementById('ios-banner').style.display = 'block';
+  }
+})();
+
+words = loadLocalWords();
+renderList();
+if (getApiKey() && getBinId()) loadFromCloud();
+</script>
+</body>
+</html>
