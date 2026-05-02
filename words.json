@@ -586,6 +586,13 @@
       "ja": "弱体化させる",
       "ex": "Constant criticism undermined her confidence.",
       "status": "New"
+    },
+    {
+      "id": "moo6i85m",
+      "en": "enhancement",
+      "ja": "向上 / 強化 / 拡張",
+      "ex": "This software update provides significant security enhancements.",
+      "status": "New"
     }
   ]
 }
