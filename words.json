@@ -516,6 +516,13 @@
       "ja": "取り除く",
       "ex": "Our goal is to eliminate all manual errors.",
       "status": "New"
+    },
+    {
+      "id": "moo66fl9",
+      "en": "act as",
+      "ja": "〜として機能する / 役割を果たす",
+      "ex": "This tablet can act as a second monitor.",
+      "status": "New"
     }
   ]
 }
