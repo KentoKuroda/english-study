@@ -565,6 +565,13 @@
       "ja": "〜を必要とする",
       "ex": "The budget cut will necessitate some changes to the plan.",
       "status": "New"
+    },
+    {
+      "id": "moo6b9hy",
+      "en": "absent",
+      "ja": "欠けている / 欠席している",
+      "ex": "Practical experience was absent from his resume.",
+      "status": "New"
     }
   ]
 }
