@@ -572,6 +572,13 @@
       "ja": "欠けている / 欠席している",
       "ex": "Practical experience was absent from his resume.",
       "status": "New"
+    },
+    {
+      "id": "moo6btlk",
+      "en": "hinder",
+      "ja": "妨げる",
+      "ex": "High winds hindered the rescue efforts.",
+      "status": "New"
     }
   ]
 }
