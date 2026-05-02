@@ -530,6 +530,13 @@
       "ja": "描く",
       "ex": "The movie depicts the life of a young scientist.",
       "status": "New"
+    },
+    {
+      "id": "moo67lt5",
+      "en": "interact",
+      "ja": "相互に作用する",
+      "ex": "How do these two chemicals interact with each other?",
+      "status": "New"
     }
   ]
 }
