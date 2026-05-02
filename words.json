@@ -551,6 +551,13 @@
       "ja": "除外する",
       "ex": "Please don't omit any important details.",
       "status": "New"
+    },
+    {
+      "id": "moo69rbf",
+      "en": "holistic",
+      "ja": "全体的な / 方書く的な",
+      "ex": "We need a holistic approach to solve this problem.",
+      "status": "New"
     }
   ]
 }
