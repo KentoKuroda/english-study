@@ -607,6 +607,13 @@
       "ja": "〜を解明する／光を当てる",
       "ex": "This study sheds light on how children learn languages.",
       "status": "New"
+    },
+    {
+      "id": "moobakhl",
+      "en": "facet",
+      "ja": "側面",
+      "ex": "We need to consider every facet of the problem.",
+      "status": "New"
     }
   ]
 }
