@@ -390,6 +390,13 @@
       "ja": "増強する / 拡張する",
       "ex": "We can augment the dataset by collecting more samples.",
       "status": "New"
+    },
+    {
+      "id": "moo5i0gw",
+      "en": "distill",
+      "ja": "抽出する",
+      "ex": "She distilled the complex report into a single page.",
+      "status": "New"
     }
   ]
 }
