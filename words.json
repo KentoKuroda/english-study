@@ -411,6 +411,13 @@
       "ja": "極めて重要な / 中核となる",
       "ex": "He played a pivotal role in the negotiations.",
       "status": "New"
+    },
+    {
+      "id": "moo5li1a",
+      "en": "facilitate",
+      "ja": "促進する / 円滑にする",
+      "ex": "The new software will facilitate communication between teams.",
+      "status": "New"
     }
   ]
 }
