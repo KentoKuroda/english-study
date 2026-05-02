@@ -502,6 +502,13 @@
       "ja": "収容する / 対応する / 配慮する",
       "ex": "The system was updated to accommodate more users.",
       "status": "New"
+    },
+    {
+      "id": "moo637gr",
+      "en": "confidential",
+      "ja": "機密の",
+      "ex": "This document contains confidential information.",
+      "status": "New"
     }
   ]
 }
