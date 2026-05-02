@@ -481,6 +481,13 @@
       "ja": "取り組む",
       "ex": "Researchers are grappling with the problem of data bias.",
       "status": "New"
+    },
+    {
+      "id": "moo5yv6d",
+      "en": "outdated",
+      "ja": "時代遅れの / 旧式の",
+      "ex": "We need to replace this outdated software.",
+      "status": "New"
     }
   ]
 }
