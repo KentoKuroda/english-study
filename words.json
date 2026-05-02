@@ -383,6 +383,13 @@
       "ja": "パラダイム / 理論的枠組み",
       "ex": "This discovery led to a paradigm shift in physics.",
       "status": "New"
+    },
+    {
+      "id": "moo5heme",
+      "en": "augment",
+      "ja": "増強する / 拡張する",
+      "ex": "We can augment the dataset by collecting more samples.",
+      "status": "New"
     }
   ]
 }
