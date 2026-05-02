@@ -488,6 +488,13 @@
       "ja": "時代遅れの / 旧式の",
       "ex": "We need to replace this outdated software.",
       "status": "New"
+    },
+    {
+      "id": "moo5zwxa",
+      "en": "parametric",
+      "ja": "パラメトリックな / パラメータに関する",
+      "ex": "We conducted a parametric study to optimize the design.",
+      "status": "New"
     }
   ]
 }
