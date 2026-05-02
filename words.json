@@ -544,6 +544,13 @@
       "ja": "予備的な",
       "ex": "We are conducting a preliminary investigation.",
       "status": "New"
+    },
+    {
+      "id": "moo68rt7",
+      "en": "omit",
+      "ja": "除外する",
+      "ex": "Please don't omit any important details.",
+      "status": "New"
     }
   ]
 }
