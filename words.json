@@ -369,6 +369,13 @@
       "ja": "障害",
       "ex": "The high cost is the main hurdle to our success.",
       "status": "New"
+    },
+    {
+      "id": "moo5g0cl",
+      "en": "mitigate",
+      "ja": "軽減する",
+      "ex": "We took steps to mitigate the risk of data loss.",
+      "status": "New"
     }
   ]
 }
