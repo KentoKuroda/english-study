@@ -1,0 +1,367 @@
+{
+  "words": [
+    {
+      "id": "mmlhuw4ni9o0",
+      "en": "using",
+      "ja": "〜を生かして",
+      "ex": "Using her language skills, she helped the tourists."
+    },
+    {
+      "id": "mmlotgu9u9t7",
+      "en": "take advantage of / leverage",
+      "ja": "〜を生かす / 利用する",
+      "ex": "I want to take advantage of this opportunity to study abroad. / We can leverage our network to grow the business.",
+      "status": "New"
+    },
+    {
+      "id": "mmlou218mhqf",
+      "en": "make the most of",
+      "ja": "〜を最大限に生かす",
+      "ex": "You should make the most of your experience.",
+      "status": "New"
+    },
+    {
+      "id": "mmlpl5cnp2o1",
+      "en": "pulse",
+      "ja": "脈 / 情勢",
+      "ex": "His pulse was rapid. / He keeps his finger on the pulse of the younger generation.",
+      "status": "New"
+    },
+    {
+      "id": "mmtzw3bt970h",
+      "en": "pee",
+      "ja": "小便する",
+      "ex": "I need to pee.",
+      "status": "New"
+    },
+    {
+      "id": "mmtzww9yuby5",
+      "en": "poop",
+      "ja": "大便する",
+      "ex": "The dog pooped on the grass.",
+      "status": "New"
+    },
+    {
+      "id": "mmtzygfpwlkg",
+      "en": "fart / pass gas",
+      "ja": "おならする",
+      "ex": "Who farted? / Excuse me, I just passed gas.",
+      "status": "New"
+    },
+    {
+      "id": "mmtzzhcvo0q4",
+      "en": "throw up",
+      "ja": "嘔吐する",
+      "ex": "I feel like I'm going to throw up.",
+      "status": "New"
+    },
+    {
+      "id": "mmu02mviu62k",
+      "en": "go to the bathroom",
+      "ja": "お手洗いに行く / 用をたす",
+      "ex": "She went to the bathroom five minutes ago and hasn't come back yet.",
+      "status": "New"
+    },
+    {
+      "id": "mmu28aky8vff",
+      "en": "be active",
+      "ja": "活躍する",
+      "ex": "She is still active as a professional singer.",
+      "status": "New"
+    },
+    {
+      "id": "mmu291l5cvtc",
+      "en": "do well",
+      "ja": "上手くやる",
+      "ex": "I heard you are doing well in your new position.",
+      "status": "New"
+    },
+    {
+      "id": "mmu2b67knqsx",
+      "en": "get / deliver results",
+      "ja": "成果を出す / 結果を残す",
+      "ex": "He always delivers results, even under pressure.",
+      "status": "New"
+    },
+    {
+      "id": "mmu2cwc1z4wo",
+      "en": "No matter how",
+      "ja": "どんなに〜でも",
+      "ex": "No matter how busy he is, he always delivers results.",
+      "status": "New"
+    },
+    {
+      "id": "mmu2hha4kiv1",
+      "en": "play a role in / fulfill a role as / serve as",
+      "ja": "〜する上で / 〜として役割を果たす",
+      "ex": "He plays a key role in moving the project forward. / You need to fulfill your role as a team member. / This room also serves as a meeting room.",
+      "status": "New"
+    },
+    {
+      "id": "mmu2l8dfplz6",
+      "en": "order of magnitude",
+      "ja": "桁（10倍単位）",
+      "ex": "Large language models typically require 3 or 4 orders of magnitude more data.",
+      "status": "New"
+    },
+    {
+      "id": "mmu2p9mlmk5g",
+      "en": "eventually",
+      "ja": "やがて",
+      "ex": "The rain will stop eventually.",
+      "status": "New"
+    },
+    {
+      "id": "mmu2pi3n4wwx",
+      "en": "effective",
+      "ja": "効果的",
+      "ex": "That work was very effective in achieving that goal.",
+      "status": "New"
+    },
+    {
+      "id": "mmu2qwjur0q4",
+      "en": "efficient",
+      "ja": "効率的 / 手際の良い",
+      "ex": "We need to find a more efficient way to process these orders.",
+      "status": "New"
+    },
+    {
+      "id": "mmu2zvm9z79p",
+      "en": "a hassle / too much trouble / annoying / can't be bothered to",
+      "ja": "〜するのが面倒臭い",
+      "ex": "It’s a hassle to fill out all these forms. / It's too much trouble to go all the way back home. / This software is so annoying. / I can't be bothered to cook dinner tonight.",
+      "status": "New"
+    },
+    {
+      "id": "mmu30q4hntfh",
+      "en": "fill out",
+      "ja": "記入する",
+      "ex": "I have to fill out the forms and submit them by next week.",
+      "status": "New"
+    },
+    {
+      "id": "mmu32tgfo2wk",
+      "en": "modest",
+      "ja": "謙虚な / ささやかな",
+      "ex": "Curriculum learning attempts were largely unsuccessful, though some showed modest improvements.",
+      "status": "New"
+    },
+    {
+      "id": "mmu347yyqnbj",
+      "en": "outperform",
+      "ja": "上回る結果を残す",
+      "ex": "The winning submissions outperformed models trained on trillions of words.",
+      "status": "New"
+    },
+    {
+      "id": "mmu35uk5h6us",
+      "en": "within a budget limitation",
+      "ja": "予算内",
+      "ex": "We have to work within our budget limitations.",
+      "status": "New"
+    },
+    {
+      "id": "mmu36fllxzz9",
+      "en": "impose restriction on",
+      "ja": "制限をかける",
+      "ex": "We need to impose restrictions on video generation using generative AI.",
+      "status": "New"
+    },
+    {
+      "id": "mmu3als0vwil",
+      "en": "before next",
+      "ja": "次の〜までに",
+      "ex": "The client gave me a lot of homework to do before our next meeting.",
+      "status": "New"
+    },
+    {
+      "id": "mmu3cv2xao3r",
+      "en": "a communal effort",
+      "ja": "共同作業 / 共同プロジェクト",
+      "ex": "The BabyLM Challenge is a communal effort in which participants compete to optimize language model training on a fixed data budget.",
+      "status": "New"
+    },
+    {
+      "id": "mmu3f54j1fcc",
+      "en": "up to",
+      "ja": "最大",
+      "ex": "You can select up to three.",
+      "status": "New"
+    },
+    {
+      "id": "mmu3ijesy9cq",
+      "en": "downstream task",
+      "ja": "下流タスク",
+      "ex": "A downstream task refers to the final task in which an AI model, pre-trained on a massive dataset, undergoes additional training or is applied to achieve a specific objective.",
+      "status": "New"
+    },
+    {
+      "id": "mmu3k999yumr",
+      "en": "massive",
+      "ja": "膨大な",
+      "ex": "We trained the model using a massive amount of data.",
+      "status": "New"
+    },
+    {
+      "id": "mmu3oe1potyg",
+      "en": "demand for",
+      "ja": "〜の需要",
+      "ex": "Demand for semiconductors is set to grow in the future.",
+      "status": "New"
+    },
+    {
+      "id": "mmu3pluxl409",
+      "en": "intensive",
+      "ja": "集約的な",
+      "ex": "I took an intensive English course last summer. / These intensive resource demands limit the ability of researchers to train new models",
+      "status": "New"
+    },
+    {
+      "id": "mmu3sfdj7hfg",
+      "en": "be set to",
+      "ja": "〜することになっている / 〜しそうだ",
+      "ex": "The new store is set to open next Monday. / Temperatures are set to rise further this week.",
+      "status": "New"
+    },
+    {
+      "id": "mmu3ssjloysm",
+      "en": "be about to",
+      "ja": "まさに今〜しそう",
+      "ex": "It looks like it's about to start raining.",
+      "status": "New"
+    },
+    {
+      "id": "mn9yvq3r8vhp",
+      "en": "endoscopist",
+      "ja": "内視鏡医",
+      "ex": "An endoscopist is a physician with advanced knowledge and skills in gastrointestinal endoscopy, such as gastroscopy and colonoscopy.",
+      "status": "New"
+    },
+    {
+      "id": "mn9yzcgqqcgd",
+      "en": "advanced knowledge",
+      "ja": "高度な知識",
+      "ex": "It is important to have advanced knowledge in each specialized field.",
+      "status": "New"
+    },
+    {
+      "id": "mn9zanfygbe1",
+      "en": "specialized field",
+      "ja": "専門分野",
+      "ex": "I'm struggling to decide which business to pursue because I don't have a specialized field.",
+      "status": "New"
+    },
+    {
+      "id": "mn9zgp40xvhs",
+      "en": "can't decide",
+      "ja": "悩む",
+      "ex": "I can't decide what to wear for the party.",
+      "status": "New"
+    },
+    {
+      "id": "mna02961csoy",
+      "en": "struggle with / to / have trouble ~ing",
+      "ja": "苦しむ",
+      "ex": "Many people struggle with work-life balance. / I'm having trouble deciding which business to apply for.",
+      "status": "New"
+    },
+    {
+      "id": "mna0agcadpyj",
+      "en": "introduction / implementation / adoption / installation",
+      "ja": "導入（実装 / 採用 / インストール）",
+      "ex": "We are planning the implementation of a new security system. / The adoption of remote work has increased significantly. / The installation of the new software is complete.",
+      "status": "New"
+    },
+    {
+      "id": "mna1mow4pqs8",
+      "en": "it is not known if / there is no evidence that",
+      "ja": "〜かどうかわからない",
+      "ex": "It is not known if the virus can survive in high temperatures.",
+      "status": "New"
+    },
+    {
+      "id": "mna1o1tov79a",
+      "en": "retrospective",
+      "ja": "振り返り",
+      "ex": "We held a retrospective after the project was completed.",
+      "status": "New"
+    },
+    {
+      "id": "mndxshdzic7e",
+      "en": "face issues",
+      "ja": "問題に直面する",
+      "ex": "Even though I don’t know Japanese, I did not face any issues at all.",
+      "status": "New"
+    },
+    {
+      "id": "mnf7hhnro9v3",
+      "en": "encounter a problem",
+      "ja": "問題に出会う",
+      "ex": "If you encounter a problem, you should report it to your supervisor.",
+      "status": "New"
+    },
+    {
+      "id": "mnqmc2oact1d",
+      "en": "during my college years",
+      "ja": "大学時代",
+      "ex": "During my college years, I conducted research on using AI to predict soccer tactics.",
+      "status": "New"
+    },
+    {
+      "id": "mnqmq4jd2fuy",
+      "en": "from now on",
+      "ja": "今後は",
+      "ex": "From now on, as a member of Hitachi, Ltd., I hope to contribute to the development of social infrastructure.",
+      "status": "New"
+    },
+    {
+      "id": "moc226hv5c0w",
+      "en": "in time",
+      "ja": "ギリギリ間に合う",
+      "ex": "I got to the airport in time for my flight.",
+      "status": "New"
+    },
+    {
+      "id": "moc2fyomlxc0",
+      "en": "It is generally accepted that",
+      "ja": "一般に受け入れられてる",
+      "ex": "It is generally accepted that men tend to think logically rather than emotionally.",
+      "status": "New"
+    },
+    {
+      "id": "moc2rg1kc6m1",
+      "en": "it used to be that",
+      "ja": "以前は〜だった",
+      "ex": "It used to be that writing research papers was done outside of working hours.",
+      "status": "New"
+    },
+    {
+      "id": "moc2wquw3ans",
+      "en": "be considered something to / that",
+      "ja": "〜するものと考えられている",
+      "ex": "Baseball is considered a sport that everyone in the country loves.",
+      "status": "New"
+    },
+    {
+      "id": "monm7cc6itgz",
+      "en": "ontology",
+      "ja": "概念、関係性、ルール",
+      "ex": "The ontology learning approach refers to a method for semi-automatically or automatically constructing a format that computers can understand and process from text data such as documents.",
+      "status": "New"
+    },
+    {
+      "id": "monm7roijdf0",
+      "en": "in contrast",
+      "ja": "反対に",
+      "ex": "In contrast, the current study aims for a continuous automated recognition task.",
+      "status": "New"
+    },
+    {
+      "id": "monm844hnejj",
+      "en": "inherent",
+      "ja": "固有の",
+      "ex": "We agree that the challenges in play-phase recognition often stem from the inherent difficulty in achieving perfect ILR due to the complexity of the sport.",
+      "status": "New"
+    }
+  ]
+}
