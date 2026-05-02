@@ -418,6 +418,13 @@
       "ja": "促進する / 円滑にする",
       "ex": "The new software will facilitate communication between teams.",
       "status": "New"
+    },
+    {
+      "id": "moo5mcvw",
+      "en": "modality",
+      "ja": "様式 / 形式",
+      "ex": "Multi-modal AI can process different modalities of information.",
+      "status": "New"
     }
   ]
 }
