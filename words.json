@@ -446,6 +446,13 @@
       "ja": "強化する / 支持する",
       "ex": "New evidence bolstered his theory.",
       "status": "New"
+    },
+    {
+      "id": "moo5sjap",
+      "en": "ample",
+      "ja": "十分過ぎるほどの",
+      "ex": "There is ample opportunity for growth.",
+      "status": "New"
     }
   ]
 }
