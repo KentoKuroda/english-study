@@ -397,6 +397,13 @@
       "ja": "抽出する",
       "ex": "She distilled the complex report into a single page.",
       "status": "New"
+    },
+    {
+      "id": "moo5iq0u",
+      "en": "encompass",
+      "ja": "含む / 網羅する",
+      "ex": "The study encompasses a wide range of topics.",
+      "status": "New"
     }
   ]
 }
