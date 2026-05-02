@@ -495,6 +495,13 @@
       "ja": "パラメトリックな / パラメータに関する",
       "ex": "We conducted a parametric study to optimize the design.",
       "status": "New"
+    },
+    {
+      "id": "moo62iu8",
+      "en": "accommodate",
+      "ja": "収容する / 対応する / 配慮する",
+      "ex": "The system was updated to accommodate more users.",
+      "status": "New"
     }
   ]
 }
