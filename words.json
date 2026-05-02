@@ -460,6 +460,13 @@
       "ja": "広大な",
       "ex": "The internet contains a vast amount of information.",
       "status": "New"
+    },
+    {
+      "id": "moo5tute",
+      "en": "prevalent",
+      "ja": "普及している / 一般的な",
+      "ex": "This view is still prevalent in modern society.",
+      "status": "New"
     }
   ]
 }
