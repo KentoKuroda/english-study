@@ -404,6 +404,13 @@
       "ja": "含む / 網羅する",
       "ex": "The study encompasses a wide range of topics.",
       "status": "New"
+    },
+    {
+      "id": "moo5jr19",
+      "en": "pivotal",
+      "ja": "極めて重要な / 中核となる",
+      "ex": "He played a pivotal role in the negotiations.",
+      "status": "New"
     }
   ]
 }
