@@ -425,6 +425,13 @@
       "ja": "様式 / 形式",
       "ex": "Multi-modal AI can process different modalities of information.",
       "status": "New"
+    },
+    {
+      "id": "moo5mz9f",
+      "en": "witness",
+      "ja": "目撃する",
+      "ex": "The last decade has witnessed rapid changes in technology.",
+      "status": "New"
     }
   ]
 }
