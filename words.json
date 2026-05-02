@@ -474,6 +474,13 @@
       "ja": "〜にある",
       "ex": "The secret of our success lies in teamwork.",
       "status": "New"
+    },
+    {
+      "id": "moo5y8zb",
+      "en": "deal with / tackle / make effort / grapple",
+      "ja": "取り組む",
+      "ex": "Researchers are grappling with the problem of data bias.",
+      "status": "New"
     }
   ]
 }
