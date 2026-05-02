@@ -593,6 +593,13 @@
       "ja": "向上 / 強化 / 拡張",
       "ex": "This software update provides significant security enhancements.",
       "status": "New"
+    },
+    {
+      "id": "moo6j2lv",
+      "en": "elaborate",
+      "ja": "詳しく述べる",
+      "ex": "Could you elaborate on that point?",
+      "status": "New"
     }
   ]
 }
