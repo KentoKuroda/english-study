@@ -362,6 +362,13 @@
       "ja": "固有の",
       "ex": "We agree that the challenges in play-phase recognition often stem from the inherent difficulty in achieving perfect ILR due to the complexity of the sport.",
       "status": "New"
+    },
+    {
+      "id": "moo5f8pp",
+      "en": "hurdle",
+      "ja": "障害",
+      "ex": "The high cost is the main hurdle to our success.",
+      "status": "New"
     }
   ]
 }
