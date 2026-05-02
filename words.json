@@ -376,6 +376,13 @@
       "ja": "軽減する",
       "ex": "We took steps to mitigate the risk of data loss.",
       "status": "New"
+    },
+    {
+      "id": "moo5gq4f",
+      "en": "paradigm",
+      "ja": "パラダイム / 理論的枠組み",
+      "ex": "This discovery led to a paradigm shift in physics.",
+      "status": "New"
     }
   ]
 }
