@@ -59,7 +59,10 @@ async function loadFromGitHub() {
     try {
         const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
         const res = await fetch(url, {
-            headers: { 'Authorization': `token ${token}`, 'Cache-Control': 'no-cache' }
+            headers: { 
+                'Authorization': `token ${token}`
+                // ここにあった 'Cache-Control' の行を削除しました
+            }
         });
 
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
