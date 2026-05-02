@@ -523,6 +523,13 @@
       "ja": "〜として機能する / 役割を果たす",
       "ex": "This tablet can act as a second monitor.",
       "status": "New"
+    },
+    {
+      "id": "moo670yq",
+      "en": "depict",
+      "ja": "描く",
+      "ex": "The movie depicts the life of a young scientist.",
+      "status": "New"
     }
   ]
 }
