@@ -600,6 +600,13 @@
       "ja": "詳しく述べる",
       "ex": "Could you elaborate on that point?",
       "status": "New"
+    },
+    {
+      "id": "moo6kcab",
+      "en": "shed light on",
+      "ja": "〜を解明する／光を当てる",
+      "ex": "This study sheds light on how children learn languages.",
+      "status": "New"
     }
   ]
 }
