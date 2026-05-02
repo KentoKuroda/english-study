@@ -509,6 +509,13 @@
       "ja": "機密の",
       "ex": "This document contains confidential information.",
       "status": "New"
+    },
+    {
+      "id": "moo6411i",
+      "en": "eliminate",
+      "ja": "取り除く",
+      "ex": "Our goal is to eliminate all manual errors.",
+      "status": "New"
     }
   ]
 }
