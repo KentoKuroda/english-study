@@ -656,6 +656,13 @@
       "ja": "具体的に",
       "ex": "Concretely, each term from the query performs a lookup to obtain a list of candidate documents, which are subsequently ranked based on their statistical scores.",
       "status": "New"
+    },
+    {
+      "id": "mop509ws",
+      "en": "statistics",
+      "ja": "統計",
+      "ex": "We analyzed the word statistics to understand the document's theme.",
+      "status": "New"
     }
   ]
 }
