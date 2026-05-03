@@ -642,6 +642,13 @@
       "ja": "客観的な / 目的",
       "ex": "We need an objective analysis of the data. / The main objective of this study is to improve accuracy.",
       "status": "New"
+    },
+    {
+      "id": "mop4crj1",
+      "en": "sparse",
+      "ja": "まばらな / 希薄な / 欠損の多い",
+      "ex": "Population is sparse in the mountain regions.",
+      "status": "New"
     }
   ]
 }
