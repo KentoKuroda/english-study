@@ -485,8 +485,7 @@
     <div class="modal-body">
       <div class="info-box">
         🐙 <strong>GitHub 同期設定</strong><br>
-        GitHubのリポジトリをデータベースとして使用します。<br>
-        手順：GitHubの Settings > Developer settings > <strong>Personal Access Tokens</strong> でトークンを発行し、ここに入力してください。
+        GitHubのリポジトリをデータベースとして使用します。
       </div>
     
       <div class="field-group">
@@ -497,6 +496,12 @@
       <div class="field-group">
         <label>ユーザー名 / リポジトリ名</label>
         <input id="cfg-repo" type="text" placeholder="kurodakento/english-study">
+      </div>
+
+      <!-- ボタンを設定モーダル内に移動 -->
+      <div class="modal-footer" style="padding: 10px 0 0 0; border-top: none;">
+        <button type="button" class="btn btn-secondary" onclick="closeSettings()">キャンセル</button>
+        <button type="button" class="btn btn-primary" onclick="saveSettings()">接続する</button>
       </div>
     </div>
   </div>
@@ -522,10 +527,6 @@
   <div class="page active" id="page-list">
 
     <!-- index.html の modal-footer 部分 -->
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" onclick="closeSettings()">キャンセル</button>
-      <button type="button" class="btn btn-primary" onclick="saveSettings()">接続する</button>
-    </div>
     <!-- Sync error banner -->
     <div class="sync-error-banner hidden" id="sync-error-banner">
       <span style="font-size:18px;flex-shrink:0">⚠️</span>

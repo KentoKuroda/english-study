@@ -113,6 +113,16 @@ async function saveToGitHub(wordsData) {
 }
 
 // --- UI操作関数 ---
+// --- 検索機能の統合 ---
+window.addEventListener('DOMContentLoaded', async () => {
+    // パスワードチェック等の既存処理... [中略]
+
+    // 検索入力イベントの追加
+    const searchInput = document.getElementById('search-input');
+    searchInput?.addEventListener('input', (e) => {
+        renderList(e.target.value);
+    });
+});
 
 window.saveSettings = async function() {
     const token = document.getElementById('cfg-token').value.trim();
@@ -141,13 +151,29 @@ window.closeSettings = function() {
     document.getElementById('settings-modal').classList.remove('open');
 };
 
-function renderList() {
+function renderList(query = '') {
     const tbody = document.getElementById('word-tbody');
     const badge = document.getElementById('count-badge');
     if (!tbody) return;
 
-    badge.textContent = `${words.length} 件`;
-    tbody.innerHTML = words.map(w => `
+    const q = query.toLowerCase().trim();
+    // 検索クエリがある場合はフィルタリング
+    const filteredWords = q 
+        ? words.filter(w => 
+            w.en.toLowerCase().includes(q) || 
+            w.ja.toLowerCase().includes(q) || 
+            (w.ex && w.ex.toLowerCase().includes(q))
+          )
+        : words;
+
+    badge.textContent = `${filteredWords.length} 件`;
+    
+    if (filteredWords.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--text-sub);">単語が見つかりません</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = filteredWords.map(w => `
         <tr>
             <td><span class="status-select status-${(w.status || 'New').toLowerCase()}">${w.status || 'New'}</span></td>
             <td class="word-en"><strong>${w.en}</strong></td>
@@ -179,12 +205,26 @@ document.getElementById('btn-save')?.addEventListener('click', async () => {
     const en = document.getElementById('inp-en').value.trim();
     const ja = document.getElementById('inp-ja').value.trim();
     const ex = document.getElementById('inp-ex').value.trim();
-    if (!en || !ja) return;
+    
+    if (!en || !ja) {
+        alert("英語と日本語を入力してください。");
+        return;
+    }
+
+    // 重複チェック (大文字小文字を区別しない)
+    const isDuplicate = words.some(w => w.en.toLowerCase() === en.toLowerCase());
+    if (isDuplicate) {
+        alert(`⚠️ 「${en}」は既に登録されています。`);
+        return;
+    }
 
     const newWord = { id: Date.now().toString(36), en, ja, ex, status: 'New' };
     words.push(newWord);
     
+    // 検索欄をクリアして全表示に戻す
+    document.getElementById('search-input').value = '';
     renderList();
+    
     localStorage.setItem(LS_WORDS, JSON.stringify(words));
     await saveToGitHub(words);
     
