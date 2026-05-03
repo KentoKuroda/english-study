@@ -705,6 +705,13 @@
       "ja": "照合 / 検索",
       "ex": "We performed a table lookup to find the user's ID.",
       "status": "New"
+    },
+    {
+      "id": "mop5uuyl",
+      "en": "subsequently",
+      "ja": "その後に / 続いて",
+      "ex": "The data was collected and subsequently analyzed.",
+      "status": "New"
     }
   ]
 }
