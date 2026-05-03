@@ -698,6 +698,13 @@
       "ja": "適切な / 関連する",
       "ex": "Please provide all pertinent information regarding the project.",
       "status": "New"
+    },
+    {
+      "id": "mop5tfti",
+      "en": "lookup",
+      "ja": "照合 / 検索",
+      "ex": "We performed a table lookup to find the user's ID.",
+      "status": "New"
     }
   ]
 }
