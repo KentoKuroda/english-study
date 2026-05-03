@@ -684,6 +684,13 @@
       "ja": "逆の / 反比例の",
       "ex": "There is an inverse relationship between price and demand.",
       "status": "New"
+    },
+    {
+      "id": "mop5rftu",
+      "en": "occurrence",
+      "ja": "出現 / 発生",
+      "ex": "The occurrence of errors has decreased significantly.",
+      "status": "New"
     }
   ]
 }
