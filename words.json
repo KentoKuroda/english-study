@@ -754,6 +754,13 @@
       "ja": "量子化",
       "ex": "Model quantization reduces the memory footprint.",
       "status": "New"
+    },
+    {
+      "id": "mopcsy1t",
+      "en": "entity",
+      "ja": "人、場所、概念などの独立した一つの対象",
+      "ex": "Named entity recognition (NER) is a common NLP task.",
+      "status": "New"
     }
   ]
 }
