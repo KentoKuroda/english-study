@@ -761,6 +761,13 @@
       "ja": "人、場所、概念などの独立した一つの対象",
       "ex": "Named entity recognition (NER) is a common NLP task.",
       "status": "New"
+    },
+    {
+      "id": "mopcul98",
+      "en": "pre-built",
+      "ja": "構築済みの",
+      "ex": "We used a pre-built library to save time.",
+      "status": "New"
     }
   ]
 }
