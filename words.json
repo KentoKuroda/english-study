@@ -691,6 +691,13 @@
       "ja": "出現 / 発生",
       "ex": "The occurrence of errors has decreased significantly.",
       "status": "New"
+    },
+    {
+      "id": "mop5snr9",
+      "en": "pertinent",
+      "ja": "適切な / 関連する",
+      "ex": "Please provide all pertinent information regarding the project.",
+      "status": "New"
     }
   ]
 }
