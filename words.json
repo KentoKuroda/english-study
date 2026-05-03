@@ -719,6 +719,13 @@
       "ja": "永久に / 無期限に",
       "ex": "The data is stored permanently.",
       "status": "New"
+    },
+    {
+      "id": "mopcktv1",
+      "en": "parliament",
+      "ja": "議会",
+      "ex": "The issue was discussed in Parliament.",
+      "status": "New"
     }
   ]
 }
