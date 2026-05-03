@@ -740,6 +740,13 @@
       "ja": "内積",
       "ex": "The similarity is calculated using the inner product of two vectors.",
       "status": "New"
+    },
+    {
+      "id": "mopcozk0",
+      "en": "partitioning",
+      "ja": "分割",
+      "ex": "Data partitioning improves query performance.",
+      "status": "New"
     }
   ]
 }
