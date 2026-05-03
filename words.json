@@ -733,6 +733,13 @@
       "ja": "採用する / 用いる / 雇う",
       "ex": "We employ a new algorithm for this task.",
       "status": "New"
+    },
+    {
+      "id": "mopcnq9i",
+      "en": "inner product",
+      "ja": "内積",
+      "ex": "The similarity is calculated using the inner product of two vectors.",
+      "status": "New"
     }
   ]
 }
