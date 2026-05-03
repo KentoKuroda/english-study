@@ -768,6 +768,13 @@
       "ja": "構築済みの",
       "ex": "We used a pre-built library to save time.",
       "status": "New"
+    },
+    {
+      "id": "mopcwx25",
+      "en": "k-hop",
+      "ja": "kホップ / kステップ",
+      "ex": "We extracted a 2-hop neighborhood of the node.",
+      "status": "New"
     }
   ]
 }
