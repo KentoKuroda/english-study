@@ -677,6 +677,13 @@
       "ja": "indexの複数形（指数 / 指標 / 索引）",
       "ex": "These indices show the economic growth of the region.",
       "status": "New"
+    },
+    {
+      "id": "mop5q80z",
+      "en": "inverse",
+      "ja": "逆の / 反比例の",
+      "ex": "There is an inverse relationship between price and demand.",
+      "status": "New"
     }
   ]
 }
