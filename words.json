@@ -712,6 +712,13 @@
       "ja": "その後に / 続いて",
       "ex": "The data was collected and subsequently analyzed.",
       "status": "New"
+    },
+    {
+      "id": "mopck2pq",
+      "en": "permanently / indefinitely",
+      "ja": "永久に / 無期限に",
+      "ex": "The data is stored permanently.",
+      "status": "New"
     }
   ]
 }
