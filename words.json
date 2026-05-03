@@ -663,6 +663,13 @@
       "ja": "統計",
       "ex": "We analyzed the word statistics to understand the document's theme.",
       "status": "New"
+    },
+    {
+      "id": "mop50rt9",
+      "en": "invert",
+      "ja": "逆転させる / 反転させる",
+      "ex": "You can invert the image to see the details better.",
+      "status": "New"
     }
   ]
 }
