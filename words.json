@@ -649,6 +649,13 @@
       "ja": "まばらな / 希薄な / 欠損の多い",
       "ex": "Population is sparse in the mountain regions.",
       "status": "New"
+    },
+    {
+      "id": "mop4yo8x",
+      "en": "specifically / concretely / to be specific",
+      "ja": "具体的に",
+      "ex": "Concretely, each term from the query performs a lookup to obtain a list of candidate documents, which are subsequently ranked based on their statistical scores.",
+      "status": "New"
     }
   ]
 }
