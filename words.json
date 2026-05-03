@@ -635,6 +635,13 @@
       "ja": "同一の / 全く同じ",
       "ex": "The two results were almost identical.",
       "status": "New"
+    },
+    {
+      "id": "mop4bmeh",
+      "en": "objective",
+      "ja": "客観的な / 目的",
+      "ex": "We need an objective analysis of the data. / The main objective of this study is to improve accuracy.",
+      "status": "New"
     }
   ]
 }
