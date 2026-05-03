@@ -670,6 +670,13 @@
       "ja": "逆転させる / 反転させる",
       "ex": "You can invert the image to see the details better.",
       "status": "New"
+    },
+    {
+      "id": "mop5plxa",
+      "en": "indices",
+      "ja": "indexの複数形（指数 / 指標 / 索引）",
+      "ex": "These indices show the economic growth of the region.",
+      "status": "New"
     }
   ]
 }
