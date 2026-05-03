@@ -747,6 +747,13 @@
       "ja": "分割",
       "ex": "Data partitioning improves query performance.",
       "status": "New"
+    },
+    {
+      "id": "mopcqo97",
+      "en": "quantization",
+      "ja": "量子化",
+      "ex": "Model quantization reduces the memory footprint.",
+      "status": "New"
     }
   ]
 }
