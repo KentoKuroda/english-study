@@ -775,6 +775,13 @@
       "ja": "kホップ / kステップ",
       "ex": "We extracted a 2-hop neighborhood of the node.",
       "status": "New"
+    },
+    {
+      "id": "mow2uj0m",
+      "en": "hide",
+      "ja": "隠れる",
+      "ex": "I had to hide behind that bush so the criminal wouldn't catch me.",
+      "status": "New"
     }
   ]
 }
