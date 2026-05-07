@@ -796,6 +796,13 @@
       "ja": "措置を講じる",
       "ex": "You should take action first before complaining.",
       "status": "New"
+    },
+    {
+      "id": "mow3aeh6",
+      "en": "at all",
+      "ja": "全く",
+      "ex": "He doesn't care about criticism at all.",
+      "status": "New"
     }
   ]
 }
