@@ -782,6 +782,13 @@
       "ja": "隠れる",
       "ex": "I had to hide behind that bush so the criminal wouldn't catch me.",
       "status": "New"
+    },
+    {
+      "id": "mow2zser",
+      "en": "curb",
+      "ja": "抑制する",
+      "ex": "The Japanese government should take measures to curb the concentration of population and industry in Tokyo.",
+      "status": "New"
     }
   ]
 }
