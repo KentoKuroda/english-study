@@ -1,10 +1,9 @@
 // --- 基本設定 ---
-const APP_PASSWORD = '0101'; // 任意のパスワードを設定してください
+const APP_PASSWORD = '0101'; 
 const LS_TOKEN = 'github_token';
 const LS_WORDS = 'english_words_v1';
-const LS_REPO = 'github_repo_path'; // "ユーザー名/リポジトリ名" 形式
+const LS_REPO = 'github_repo_path';
 
-// GitHub API 設定のデフォルト値
 let GITHUB_CONFIG = {
     owner: 'KentoKuroda',
     repo: 'english-study',
@@ -12,6 +11,11 @@ let GITHUB_CONFIG = {
 };
 
 let words = [];
+// 学習モード用の変数
+let deck = [];
+let deckIdx = 0;
+let correctCount = 0;
+let wrongCount = 0;
 
 // --- 認証と初期化 ---
 window.addEventListener('DOMContentLoaded', async () => {
@@ -22,7 +26,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // 1. 保存されている設定（リポジトリ名など）を読み込み
     const savedRepo = localStorage.getItem(LS_REPO);
     if (savedRepo && savedRepo.includes('/')) {
         const parts = savedRepo.split('/');
@@ -30,10 +33,16 @@ window.addEventListener('DOMContentLoaded', async () => {
         GITHUB_CONFIG.repo = parts[1];
     }
 
-    // 2. タブ切り替えの設定
     initTabs();
+    
+    // 検索入力イベント
+    document.getElementById('search-input')?.addEventListener('input', (e) => {
+        renderList(e.target.value);
+    });
 
-    // 3. ローカルデータの読み込み（キャッシュとして表示）
+    // 学習開始ボタン
+    document.getElementById('btn-start')?.addEventListener('click', startStudy);
+
     const localData = localStorage.getItem(LS_WORDS);
     if (localData) {
         try {
@@ -42,137 +51,135 @@ window.addEventListener('DOMContentLoaded', async () => {
         } catch (e) { console.error("Cache load error", e); }
     }
 
-    // 4. GitHubから最新データを取得
     await loadFromGitHub();
 });
 
-// --- GitHub 同期ロジック ---
+// --- 学習モードのロジック ---
 
-async function loadFromGitHub() {
-    const token = localStorage.getItem(LS_TOKEN);
-    if (!token) {
-        console.log("No token found. Open settings to connect.");
+function startStudy() {
+    const selectedStatuses = Array.from(document.querySelectorAll('input[name="status-filter"]:checked')).map(cb => cb.value);
+    deck = words.filter(w => selectedStatuses.includes(w.status || 'New'));
+    
+    if (deck.length === 0) {
+        alert("対象となる単語がありません。");
         return;
     }
 
+    // シャッフル
+    deck.sort(() => Math.random() - 0.5);
+    deckIdx = 0;
+    correctCount = 0;
+    wrongCount = 0;
+
+    document.getElementById('study-setup').style.display = 'none';
+    document.getElementById('study-result').style.display = 'none';
+    document.getElementById('study-card').style.display = 'block';
+    showCard();
+}
+
+function showCard() {
+    const word = deck[deckIdx];
+    const mode = document.querySelector('input[name="mode"]:checked').value;
+
+    // ★重要：次の問題に行く前にカードを表面に強制リセット（チラ見え防止）
+    const flashcard = document.getElementById('flashcard');
+    flashcard.classList.remove('flipped');
+
+    // テキストの更新（カードが表を向いている間に裏面を書き換える）
+    if (mode === 'en-ja') {
+        document.getElementById('front-label').textContent = 'English';
+        document.getElementById('front-word').textContent = word.en;
+        document.getElementById('back-label').textContent = '日本語';
+        document.getElementById('back-word').textContent = word.ja;
+    } else {
+        document.getElementById('front-label').textContent = '日本語';
+        document.getElementById('front-word').textContent = word.ja;
+        document.getElementById('back-label').textContent = 'English';
+        document.getElementById('back-word').textContent = word.en;
+    }
+    document.getElementById('back-example').textContent = word.ex || '';
+
+    // 進捗表示
+    const progress = ((deckIdx + 1) / deck.length) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+    document.getElementById('progress-text').textContent = `${deckIdx + 1} / ${deck.length}`;
+
+    document.getElementById('fc-flip-hint').style.display = '';
+    document.getElementById('fc-controls').style.display = 'none';
+}
+
+window.flipCard = function() {
+    document.getElementById('flashcard').classList.add('flipped');
+    document.getElementById('fc-flip-hint').style.display = 'none';
+    document.getElementById('fc-controls').style.display = 'flex';
+};
+
+window.answer = function(correct) {
+    if (correct) correctCount++; else wrongCount++;
+    deckIdx++;
+    if (deckIdx >= deck.length) showResult(); else showCard();
+};
+
+function showResult() {
+    document.getElementById('study-card').style.display = 'none';
+    document.getElementById('study-result').style.display = 'block';
+    const total = deck.length;
+    const pct = Math.round((correctCount / total) * 100);
+    document.getElementById('result-score').textContent = pct + '%';
+    document.getElementById('res-correct').textContent = correctCount;
+    document.getElementById('res-wrong').textContent = wrongCount;
+    document.getElementById('res-total').textContent = total;
+}
+
+window.backToSetup = function() {
+    document.getElementById('study-result').style.display = 'none';
+    document.getElementById('study-setup').style.display = 'block';
+};
+
+// --- GitHub 同期・UI操作ロジック [既存のものを維持] ---
+
+async function loadFromGitHub() {
+    const token = localStorage.getItem(LS_TOKEN);
+    if (!token) return;
     setSyncStatus('syncing', 'GitHubから取得中…');
     try {
         const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
-        const res = await fetch(url, {
-            headers: { 
-                'Authorization': `token ${token}`
-                // ここにあった 'Cache-Control' の行を削除しました
-            }
-        });
-
+        const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        
         const data = await res.json();
-        // 日本語文字化け対策のデコード
         const content = decodeURIComponent(escape(atob(data.content)));
-        const json = JSON.parse(content);
-        
-        words = json.words || [];
+        words = JSON.parse(content).words || [];
         localStorage.setItem(LS_WORDS, JSON.stringify(words));
         renderList();
         setSyncStatus('ok', '✓ 同期完了');
-    } catch (e) {
-        console.error(e);
-        setSyncStatus('error', '✗ 同期失敗');
-    }
+    } catch (e) { setSyncStatus('error', '✗ 同期失敗'); }
 }
 
 async function saveToGitHub(wordsData) {
     const token = localStorage.getItem(LS_TOKEN);
     if (!token) return;
-
     setSyncStatus('syncing', 'GitHubへ保存中…');
     try {
         const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}`;
-        
-        // 最新のSHAを取得
         const getRes = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
         const fileData = await getRes.json();
-        const sha = fileData.sha;
-
-        // データのエンコード（日本語対応）
         const content = btoa(unescape(encodeURIComponent(JSON.stringify({ words: wordsData }, null, 2))));
-        
-        const putRes = await fetch(url, {
+        await fetch(url, {
             method: 'PUT',
             headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: "Update via Web App", content: content, sha: sha })
+            body: JSON.stringify({ message: "Update via Web App", content: content, sha: fileData.sha })
         });
-
-        if (!putRes.ok) throw new Error('Update failed');
         setSyncStatus('ok', '✓ リポジトリ更新完了');
-    } catch (e) {
-        console.error(e);
-        setSyncStatus('error', '✗ 保存失敗');
-    }
+    } catch (e) { setSyncStatus('error', '✗ 保存失敗'); }
 }
-
-// --- UI操作関数 ---
-// --- 検索機能の統合 ---
-window.addEventListener('DOMContentLoaded', async () => {
-    // パスワードチェック等の既存処理... [中略]
-
-    // 検索入力イベントの追加
-    const searchInput = document.getElementById('search-input');
-    searchInput?.addEventListener('input', (e) => {
-        renderList(e.target.value);
-    });
-});
-
-window.saveSettings = async function() {
-    const token = document.getElementById('cfg-token').value.trim();
-    const repo = document.getElementById('cfg-repo').value.trim();
-
-    if (token) localStorage.setItem(LS_TOKEN, token);
-    if (repo) {
-        localStorage.setItem(LS_REPO, repo);
-        const parts = repo.split('/');
-        GITHUB_CONFIG.owner = parts[0];
-        GITHUB_CONFIG.repo = parts[1];
-    }
-
-    window.closeSettings();
-    await loadFromGitHub();
-};
-
-window.openSettings = function() {
-    const modal = document.getElementById('settings-modal');
-    document.getElementById('cfg-token').value = localStorage.getItem(LS_TOKEN) || '';
-    document.getElementById('cfg-repo').value = localStorage.getItem(LS_REPO) || `${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}`;
-    modal.classList.add('open');
-};
-
-window.closeSettings = function() {
-    document.getElementById('settings-modal').classList.remove('open');
-};
 
 function renderList(query = '') {
     const tbody = document.getElementById('word-tbody');
     const badge = document.getElementById('count-badge');
     if (!tbody) return;
-
     const q = query.toLowerCase().trim();
-    // 検索クエリがある場合はフィルタリング
-    const filteredWords = q 
-        ? words.filter(w => 
-            w.en.toLowerCase().includes(q) || 
-            w.ja.toLowerCase().includes(q) || 
-            (w.ex && w.ex.toLowerCase().includes(q))
-          )
-        : words;
-
+    const filteredWords = q ? words.filter(w => w.en.toLowerCase().includes(q) || w.ja.toLowerCase().includes(q)) : words;
     badge.textContent = `${filteredWords.length} 件`;
-    
-    if (filteredWords.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--text-sub);">単語が見つかりません</td></tr>';
-        return;
-    }
-
     tbody.innerHTML = filteredWords.map(w => `
         <tr>
             <td><span class="status-select status-${(w.status || 'New').toLowerCase()}">${w.status || 'New'}</span></td>
@@ -183,6 +190,23 @@ function renderList(query = '') {
         </tr>
     `).reverse().join('');
 }
+
+window.saveSettings = async function() {
+    const token = document.getElementById('cfg-token').value.trim();
+    const repo = document.getElementById('cfg-repo').value.trim();
+    if (token) localStorage.setItem(LS_TOKEN, token);
+    if (repo) localStorage.setItem(LS_REPO, repo);
+    window.closeSettings();
+    location.reload(); // 設定反映のためリロード
+};
+
+window.openSettings = function() {
+    document.getElementById('settings-modal').classList.add('open');
+    document.getElementById('cfg-token').value = localStorage.getItem(LS_TOKEN) || '';
+    document.getElementById('cfg-repo').value = localStorage.getItem(LS_REPO) || '';
+};
+
+window.closeSettings = function() { document.getElementById('settings-modal').classList.remove('open'); };
 
 function setSyncStatus(state, text) {
     const el = document.getElementById('sync-status');
@@ -200,34 +224,20 @@ function initTabs() {
     });
 }
 
-// 追加ボタンのイベント
 document.getElementById('btn-save')?.addEventListener('click', async () => {
     const en = document.getElementById('inp-en').value.trim();
     const ja = document.getElementById('inp-ja').value.trim();
     const ex = document.getElementById('inp-ex').value.trim();
-    
-    if (!en || !ja) {
-        alert("英語と日本語を入力してください。");
-        return;
-    }
-
-    // 重複チェック (大文字小文字を区別しない)
-    const isDuplicate = words.some(w => w.en.toLowerCase() === en.toLowerCase());
-    if (isDuplicate) {
+    if (!en || !ja) return;
+    if (words.some(w => w.en.toLowerCase() === en.toLowerCase())) {
         alert(`⚠️ 「${en}」は既に登録されています。`);
         return;
     }
-
     const newWord = { id: Date.now().toString(36), en, ja, ex, status: 'New' };
     words.push(newWord);
-    
-    // 検索欄をクリアして全表示に戻す
-    document.getElementById('search-input').value = '';
     renderList();
-    
     localStorage.setItem(LS_WORDS, JSON.stringify(words));
     await saveToGitHub(words);
-    
     document.getElementById('inp-en').value = '';
     document.getElementById('inp-ja').value = '';
     document.getElementById('inp-ex').value = '';
